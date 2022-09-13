@@ -1,0 +1,97 @@
+@import url("https://fonts.googleapis.com/css2?family=Fira+Sans:wght@200;300;400;500;600;700;800;900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:wght@300;400;500;600;700;800;900&family=Roboto+Mono:wght@300;400;500;700&family=Roboto:wght@300;400;500;700&display=swap");
+@tailwind base;
+/* @tailwind components; */
+@tailwind utilities;
+*,
+::after,
+::before {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+::-webkit-scrollbar {
+	width: 4px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+	background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	@apply bg-primary;
+	border-radius: 4px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	background: #555;
+}
+
+.tooltip {
+	position: relative;
+	display: inline-block;
+	/* border-bottom: 1px dotted black; */
+}
+
+.tooltip_text {
+	display: inline-block;
+	visibility: hidden;
+	font-size: 12px;
+	min-width: 80px;
+	background-color: black;
+	color: #fff;
+	text-align: center;
+	padding: 0 4px;
+	border-radius: 6px;
+	top: -12px;
+
+	/* Position the tooltip text - see examples below! */
+	position: absolute;
+	z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltip_text {
+	visibility: visible;
+}
+
+.emoji-picker-react {
+	position: absolute;
+	top: -390px;
+	left: 12px;
+	background-color: #080420;
+	box-shadow: 0 5px 10px #62d2a2;
+	border-color: #62d2a2;
+	z-index: 100 !important;
+	.emoji-scroll-wrapper::-webkit-scrollbar {
+		background-color: #080420;
+		width: 5px;
+		&-thumb {
+			background-color: #62d2a2;
+		}
+	}
+	.emoji-categories {
+		button {
+			filter: contrast(0);
+		}
+	}
+	.emoji-search {
+		display: none !important;
+		background-color: transparent;
+		border-color: #62d2a2;
+	}
+	.emoji-group:before {
+		background-color: #080420;
+	}
+	.skin-tones-list {
+		display: none;
+	}
+}
+
+.component-center {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}

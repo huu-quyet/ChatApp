@@ -1,0 +1,130 @@
+.login_page {
+	margin: 12px 0;
+	position: relative;
+	.switch {
+		@apply text-base text-center my-4 font-semibold flex justify-center items-end;
+	}
+	.login {
+		display: flex;
+		position: relative;
+		justify-content: center;
+		background-color: rgba(0, 0, 0, 0.1);
+		width: 150px;
+		border-radius: 50px;
+		box-shadow: 2px 2px 5px #666666, -2px -2px 5px #ffffff;
+		transition: all 0.8s;
+
+		&::before {
+			content: "";
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 50%;
+			height: 100%;
+			background-color: white;
+			border-radius: 50px;
+			z-index: 10;
+			box-shadow: 0 2px 15px rgba(0, 0, 0, 0.15);
+			transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+		}
+
+		&.checked::before {
+			left: 50%;
+		}
+	}
+
+	.card-wrap {
+		position: relative;
+		width: 400px;
+		max-width: 100%;
+		margin-top: 28px;
+		height: 440px;
+		transform-style: preserve-3d;
+		perspective: 800px;
+		top: 0;
+		left: 50%;
+		transform: translate(-50%, 0);
+	}
+
+	.card-wrapper {
+		width: 100%;
+		height: 100%;
+		transform-style: preserve-3d;
+		transition: all 0.8s ease-out;
+		position: absolute;
+		top: 0;
+		left: 0;
+		position: absolute;
+	}
+
+	.card-front,
+	.card-back {
+		width: 100%;
+		height: 100%;
+		padding: 24px 0;
+		border-radius: 8px;
+		background-color: #f3f3f7;
+		box-shadow: -2px -2px 4px 0px #ffffff, 10px 10px 10px 0 rgba(0, 0, 0, 0.25);
+		position: absolute;
+		top: 0;
+		left: 0;
+		transform-style: preserve-3d;
+		backface-visibility: hidden;
+		& input {
+			padding: 4px 20px;
+			padding-left: 55px;
+			border-radius: 8px;
+			height: 48px;
+			width: 100%;
+			font-weight: 500;
+			font-size: 16px;
+			letter-spacing: 0.5px;
+			background-color: #f2f3f7;
+			outline: none;
+			border: none;
+			box-shadow: -6px -6px 8px rgba(255, 255, 255, 0.9),
+				5px 5px 8px rgba(0, 0, 0, 0.07);
+			transition: all 200ms linear;
+		}
+
+		&input:focus,
+		&input:active {
+			outline: none;
+			border: none;
+			box-shadow: -6px -6px 8px rgba(255, 255, 255, 0.9),
+				5px 5px 8px rgba(0, 0, 0, 0.07);
+		}
+
+		&input::placeholder {
+			color: #777;
+			opacity: 0.7;
+			transition: all 200ms linear;
+		}
+
+		&input:focus::placeholder {
+			opacity: 0;
+			transition: all 200ms linear;
+		}
+	}
+
+	.card-back {
+		transform: rotateY(180deg);
+	}
+
+	.rotate {
+		transform: rotateY(180deg);
+	}
+
+	.icon {
+		height: 24px;
+		// margin-top: 14px;
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		left: 16px;
+		font-size: 24px;
+		line-height: 48px;
+		color: rgb(14, 177, 71);
+		transition: all 200ms linear;
+	}
+}
