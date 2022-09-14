@@ -4,12 +4,10 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../common/store/store";
 import { loginActions } from "../../login/redux/reducer";
-import { friendsAction } from "../redux/reducer";
 import {
 	addFriend,
 	getUserInfoById,
 	rejectAddFriend,
-	sendRequireAddFriend,
 	unfriend,
 } from "../redux/service";
 import lodash from "lodash";

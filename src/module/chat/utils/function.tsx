@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Dispatch } from "@reduxjs/toolkit";
 import { chatActions } from "../redux/reducer";
 import { IRoom } from "./types";
