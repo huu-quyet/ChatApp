@@ -9,13 +9,13 @@ name: Deploy to Firebase Hosting on merge
 jobs:
  build_and_deploy:
   runs-on: ubuntu-latest
+  env:
+   BASE_URL: https://chat-app-quyetnh.herokuapp.com/api/v1/
+   SOCKET_URL: https://chat-app-quyetnh.herokuapp.com/
+   CLOUDINARY_URL: https://api.cloudinary.com/v1_1/huuquyet/image/upload
+   CLOUDINARY_UPLOAD_PRESET: huuquyet
   steps:
    - uses: actions/checkout@v2
-      env: 
-        BASE_URL: https://chat-app-quyetnh.herokuapp.com/api/v1/
-        SOCKET_URL: https://chat-app-quyetnh.herokuapp.com/
-        CLOUDINARY_URL: https://api.cloudinary.com/v1_1/huuquyet/image/upload
-        CLOUDINARY_UPLOAD_PRESET: huuquyet
    - run: npm install && npm run build
    - uses: FirebaseExtended/action-hosting-deploy@v0
      with:
