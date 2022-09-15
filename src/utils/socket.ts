@@ -2,7 +2,7 @@ import { Dispatch } from "@reduxjs/toolkit";
 import { io } from "socket.io-client";
 import { loginActions } from "../module/login/redux/reducer";
 
-const SOCKET_URL = process.env.SOCKET_URL || "http://localhost:8000";
+const SOCKET_URL = "https://chat-app-quyetnh.herokuapp.com/";
 
 export const EVENTS = {
 	connection: "connection",
