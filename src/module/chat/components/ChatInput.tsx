@@ -124,7 +124,7 @@ const ChatInput = ({
 		setShowEmoji(!showEmoji);
 	}, [showEmoji]);
 
-	const handleEmojiClick = (emoji: any) => {
+	const handleEmojiClick = (event: any, emoji: any) => {
 		let message = newMessage;
 		message += emoji.emoji;
 		setNewMessage(message);
