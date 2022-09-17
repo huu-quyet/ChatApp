@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+
 import { chatActions } from "../redux/reducer";
 import ChangeChatName from "./ChangeChatName";
 
 const ConversationSetting = (): JSX.Element => {
 	const [changeChatName, setChangeChatName] = useState(false);
+
 	const dispatch = useDispatch();
+
 	return (
-		<div className="w-full h-[90%] absolute top-0 left-0">
+		<section className="w-full h-[90%] absolute top-0 left-0">
 			<div
 				onClick={() => {
 					dispatch(chatActions.setShowPopup(false));
@@ -36,7 +39,7 @@ const ConversationSetting = (): JSX.Element => {
 			{changeChatName ? (
 				<ChangeChatName setChangeChatName={setChangeChatName} />
 			) : null}
-		</div>
+		</section>
 	);
 };
 

@@ -1,7 +1,9 @@
 /* eslint-disable indent */
-import { UserIcon } from "@heroicons/react/outline";
 import React, { useEffect, useState } from "react";
+import { UserIcon } from "@heroicons/react/outline";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
 import { RootState } from "../../../common/store/store";
 import { loginActions } from "../../login/redux/reducer";
 import {
@@ -11,7 +13,6 @@ import {
 	unfriend,
 } from "../redux/service";
 import lodash from "lodash";
-import { useNavigate } from "react-router-dom";
 import { IUser } from "../../chat/utils/types";
 import socket, { EVENTS } from "../../../utils/socket";
 

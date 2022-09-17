@@ -2,6 +2,7 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 import { RootState } from "../../../common/store/store";
 import { chatActions } from "../redux/reducer";
 import { IUser } from "../utils/types";
@@ -44,8 +45,16 @@ const Header = (): JSX.Element => {
 		}
 	}, [isCreatingRoom]);
 
+	const getNameRoom = () => {
+		return currentRoom?.name?.length > 0
+			? currentRoom?.name
+			: currentRoom?.userId?.reduce((acc: string, cur: IUser) => {
+					return acc + cur.userName + ", ";
+			  }, "");
+	};
+
 	return (
-		<div
+		<section
 			className={`h-[12%] min-w-full grid grid-cols-[0.2fr_3fr_0.2fr] py-4 px-4 mb-[2px] relative ${
 				currentRoom?.userId?.length > 2
 					? "grid-rows-[2rem_2rem]"
@@ -69,11 +78,7 @@ const Header = (): JSX.Element => {
 					</div>
 					<div className="font-bold w-80 flex items-center">
 						<span className="w-full whitespace-nowrap overflow-hidden text-ellipsis text-2xl">
-							{currentRoom?.name?.length > 0
-								? currentRoom?.name
-								: currentRoom?.userId?.reduce((acc: string, cur: IUser) => {
-										return acc + cur.userName + ", ";
-								  }, "")}
+							{getNameRoom()}
 						</span>
 					</div>
 					{currentRoom?.userId?.length > 2 && (
@@ -95,7 +100,7 @@ const Header = (): JSX.Element => {
 					</div>
 				</>
 			)}
-		</div>
+		</section>
 	);
 };
 

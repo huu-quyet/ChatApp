@@ -5,9 +5,11 @@ import { forgotPassword } from "../redux/service";
 const ForgotPassword = (): JSX.Element => {
 	const [email, setEmail] = useState("");
 	const [notification, setNotification] = useState("");
+
 	const handleChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setEmail(e.target.value);
 	};
+
 	const handleForgotPassword = () => {
 		if (!email) {
 			setNotification("Please enter your email");
@@ -30,8 +32,9 @@ const ForgotPassword = (): JSX.Element => {
 				});
 		}
 	};
+
 	return (
-		<div className="w-1/3 h-2/3 bg-green-300 py-8 px-12 border-2 m-auto relative top-1/2 translate-y-[-50%] rounded-xl">
+		<section className="w-1/3 h-2/3 bg-primary py-8 px-12 border-2 m-auto relative top-1/2 translate-y-[-50%] rounded-xl">
 			<h4 className="text-3xl font-bold mb-4">Reset your password</h4>
 			<p className="mb-8">
 				We{"'"}ll email you instructions to reset the password.
@@ -62,7 +65,7 @@ const ForgotPassword = (): JSX.Element => {
 			>
 				Return to login
 			</Link>
-		</div>
+		</section>
 	);
 };
 

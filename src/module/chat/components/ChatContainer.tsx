@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 import { RootState } from "../../../common/store/store";
 import socket, { EVENTS } from "../../../utils/socket";
 import Header from "./Header";
@@ -15,10 +16,20 @@ const ChatContainer = (): JSX.Element => {
 
 	const dispatch = useDispatch();
 
+	const updateRoomAndMessage = (response: any) => {
+		const roomExist = rooms.findIndex((room) => room._id === response.room._id);
+		const newRooms = [...rooms];
+		newRooms[roomExist] = {
+			...rooms[roomExist],
+			unRead: response.room.unRead,
+		};
+		dispatch(chatActions.getAllMes(response.messages));
+		dispatch(chatActions.updateRoom(newRooms));
+	};
+
 	useEffect(() => {
 		const userInfo = localStorage.getItem("userInfo");
 		if (currentRoom?._id && userInfo && !isLoading) {
-			console.log(currentRoom);
 			setLoading(true);
 			socket.emit(
 				EVENTS.CLIENT.JOIN_ROOM,
@@ -27,16 +38,7 @@ const ChatContainer = (): JSX.Element => {
 				socket.id,
 				JSON.parse(userInfo)._id,
 				(response: any) => {
-					const roomExist = rooms.findIndex(
-						(room) => room._id === response.room._id
-					);
-					const newRooms = [...rooms];
-					newRooms[roomExist] = {
-						...rooms[roomExist],
-						unRead: response.room.unRead,
-					};
-					dispatch(chatActions.getAllMes(response.messages));
-					dispatch(chatActions.updateRoom(newRooms));
+					updateRoomAndMessage(response);
 					setLoading(false);
 				}
 			);

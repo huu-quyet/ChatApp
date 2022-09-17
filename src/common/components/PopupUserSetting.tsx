@@ -6,6 +6,7 @@ import {
 	XIcon,
 } from "@heroicons/react/outline";
 import { useNavigate } from "react-router-dom";
+
 import ActiveStatus from "./ActiveStatus";
 import AccountSetting from "./AccountSetting";
 
@@ -18,6 +19,7 @@ const PopupUserSetting = ({ isOpen, onClose }: TProp): JSX.Element => {
 	const [isActiveStatus, setIsActiveStatus] = useState(true);
 	const [isAccountSetting, setIsAccountSetting] = useState(false);
 	const navigate = useNavigate();
+
 	const handleLogout = () => {
 		localStorage.removeItem("userInfo");
 		localStorage.removeItem("expireTime");

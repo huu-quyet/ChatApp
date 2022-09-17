@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import "../assets/css/Login.scss";
-import { apiLogin, apiSignUp } from "../redux/service";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+
 import {
 	MailIcon,
 	KeyIcon,
@@ -8,9 +9,11 @@ import {
 	EyeOffIcon,
 	EyeIcon,
 } from "@heroicons/react/outline";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+
+import { apiLogin, apiSignUp } from "../redux/service";
 import { loginActions } from "../redux/reducer";
+
+import "../assets/css/Login.scss";
 
 const Login = (): JSX.Element => {
 	const [isLogin, setIsLogin] = useState(true);
@@ -20,11 +23,13 @@ const Login = (): JSX.Element => {
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const [loginError, setLoginError] = useState("");
 	const [typePassword, setTypePassword] = useState("password");
+
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
 	const token = localStorage.getItem("token");
 	const userInfo = localStorage.getItem("userInfo");
+
 	useEffect(() => {
 		if (!token || !userInfo) {
 			navigate("/login", { replace: true });
@@ -97,6 +102,7 @@ const Login = (): JSX.Element => {
 			}
 		}
 	};
+
 	const signUp = (e: any) => {
 		if (e.type === "click" || (e.type === "keydown" && e.code === "Enter")) {
 			if (!userName) {
@@ -167,8 +173,9 @@ const Login = (): JSX.Element => {
 			}
 		}
 	};
+
 	return (
-		<div className="login_page">
+		<section className="login_page">
 			<div className="switch">
 				<label className={`login ${!isLogin && "checked"}`}>
 					<input
@@ -309,7 +316,7 @@ const Login = (): JSX.Element => {
 					</div>
 				</div>
 			</div>
-		</div>
+		</section>
 	);
 };
 

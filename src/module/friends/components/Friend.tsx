@@ -1,6 +1,7 @@
 import React from "react";
-import { UserIcon } from "@heroicons/react/outline";
 import { useSelector } from "react-redux";
+import { UserIcon } from "@heroicons/react/outline";
+
 import { RootState } from "../../../common/store/store";
 import { IUser } from "../../chat/utils/types";
 
@@ -11,14 +12,15 @@ type TProps = {
 
 const Friend = ({ friend, handleSelectUser }: TProps) => {
 	const { userSelected } = useSelector((state: RootState) => state.friends);
+
 	return (
 		<div
 			onClick={() => {
 				handleSelectUser(friend);
 			}}
-			key={friend._id}
+			key={friend?._id}
 			className={`px-2 w-full py-2 flex justify-between items-center cursor-pointer ${
-				userSelected?._id === friend._id && "bg-gray-100"
+				userSelected?._id === friend?._id && "bg-gray-100"
 			}`}
 		>
 			<span className="flex items-center w-full relative">
@@ -30,7 +32,7 @@ const Friend = ({ friend, handleSelectUser }: TProps) => {
 					</span>
 				)}
 				<span className="ml-2 font-bold max-w-[70%] block whitespace-nowrap overflow-hidden text-ellipsis">
-					{friend.userName}
+					{friend?.userName}
 				</span>
 				{friend?.online && (
 					<span className="flex h-3 w-3 absolute left-8 bottom-0">

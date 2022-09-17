@@ -88,41 +88,41 @@ function App() {
 				<Route
 					path="/messages"
 					element={
-						<div className="relative w-screen h-screen">
+						<section className="relative w-screen h-screen">
 							<ChatPage />
-						</div>
+						</section>
 					}
 				/>
 				<Route
 					path="/messages/:id"
 					element={
-						<div className="relative w-screen h-screen">
+						<section className="relative w-screen h-screen">
 							<ChatPage />
-						</div>
+						</section>
 					}
 				/>
 				<Route
 					path="/friends"
 					element={
-						<div className="relative w-screen h-screen">
+						<section className="relative w-screen h-screen">
 							<FriendsPage />
-						</div>
+						</section>
 					}
 				/>
 				<Route
 					path="/friends/:id"
 					element={
-						<div className="relative w-screen h-screen">
+						<section className="relative w-screen h-screen">
 							<FriendsPage />
-						</div>
+						</section>
 					}
 				/>
 				<Route
 					path="/calendar"
 					element={
-						<div className="relative w-screen h-screen">
+						<section className="relative w-screen h-screen">
 							<div className="font-black text-7xl component-center">Coming soon</div>
-						</div>
+						</section>
 					}
 				/>
 			</Routes>

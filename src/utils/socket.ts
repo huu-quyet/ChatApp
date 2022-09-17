@@ -2,8 +2,8 @@ import { Dispatch } from "@reduxjs/toolkit";
 import { io } from "socket.io-client";
 import { loginActions } from "../module/login/redux/reducer";
 
-// const SOCKET_URL = "https://chat-app-quyetnh.herokuapp.com/";
-const SOCKET_URL = "http://localhost:8000/";
+const SOCKET_URL = "https://chat-app-quyetnh.herokuapp.com/";
+// const SOCKET_URL = "http://localhost:8000/";
 
 export const EVENTS = {
 	connection: "connection",
@@ -34,10 +34,7 @@ const socket = io(SOCKET_URL);
 
 export const fnSocket = (dispatch: Dispatch, user: any) => {
 	socket.on("connect", () => {
-		console.log("User connected");
-		console.log(socket.connected);
-		console.log(socket.id);
-
+		console.log("ws connected!");
 		// Send user is online
 		socket.emit(EVENTS.CLIENT.USER_CONNECTION, user?._id, socket.id);
 	});
@@ -57,7 +54,7 @@ export const fnSocket = (dispatch: Dispatch, user: any) => {
 	});
 	return () => {
 		socket.off("disconnect", () => {
-			console.log("User disconnected");
+			console.log("ws disconnected");
 		});
 	};
 };

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+
 import { IUser } from "../../chat/utils/types";
 import { friendsAction } from "../redux/reducer";
 import { getListUserInfoNotify } from "../redux/service";

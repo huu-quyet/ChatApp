@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 import { RootState } from "../../../common/store/store";
 import socket, { EVENTS } from "../../../utils/socket";
 import { chatActions } from "../redux/reducer";
@@ -19,12 +20,14 @@ const MessageContainer = ({ loading }: { loading: boolean }): JSX.Element => {
 		showPopup: popupSetting,
 		countNewMes,
 	} = useSelector((state: RootState) => state.chats);
+
 	const [isSendingMes, setIsSendingMes] = useState(false);
 	const [isShowButton, setIsShowButton] = useState(false);
 	const [isScroll, setIsScroll] = useState(false);
 	const [newMessage, setNewMessage] = useState("");
 	const [showEmoji, setShowEmoji] = useState(false);
 	const [isLoadMore, setIsLoadMore] = useState(false);
+
 	const messageEndRef = useRef<any>(null);
 
 	const dispatch = useDispatch();
@@ -47,7 +50,9 @@ const MessageContainer = ({ loading }: { loading: boolean }): JSX.Element => {
 
 	useEffect(() => {
 		if (loading) return;
+
 		const mesEle = document.querySelector(".messages");
+
 		const handleScrollLoadMoreMessage = () => {
 			if (!mesEle) return;
 			const scrollTotal = mesEle.scrollHeight - mesEle.clientHeight;
@@ -67,6 +72,7 @@ const MessageContainer = ({ loading }: { loading: boolean }): JSX.Element => {
 				setIsShowButton(false);
 			}
 		};
+
 		mesEle?.addEventListener("scroll", handleScrollLoadMoreMessage);
 
 		return () => {
@@ -77,6 +83,7 @@ const MessageContainer = ({ loading }: { loading: boolean }): JSX.Element => {
 	useEffect(() => {
 		if (page && !isLastPage && isScroll) {
 			setIsScroll(false);
+
 			socket.emit(
 				EVENTS.CLIENT.LOAD_MORE_MESSAGE,
 				{
@@ -126,7 +133,7 @@ const MessageContainer = ({ loading }: { loading: boolean }): JSX.Element => {
 	};
 
 	return (
-		<div className="h-[88%] w-full bg-gray-100 relative">
+		<section className="h-[88%] w-full bg-gray-100 relative">
 			{currentRoom?._id ? (
 				<>
 					{popupSetting ? <ConversationSetting /> : null}
@@ -165,7 +172,7 @@ const MessageContainer = ({ loading }: { loading: boolean }): JSX.Element => {
 					/>
 				</>
 			) : null}
-		</div>
+		</section>
 	);
 };
 

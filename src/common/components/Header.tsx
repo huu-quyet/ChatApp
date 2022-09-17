@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { CalendarIcon, ChatIcon, UsersIcon } from "@heroicons/react/outline";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+
 import { RootState } from "../store/store";
 import Avatar from "./Avatar";
 import { IUser } from "../../module/chat/utils/types";
@@ -35,19 +36,20 @@ const Header = ({ href }: TProps): JSX.Element => {
 		}
 	});
 
-	const handleOpenPopupSetting = () => {
+	const handleOpenPopupSetting = useCallback(() => {
 		setOpenPopup(true);
-	};
-	const handleClosePopupSetting = () => {
+	}, []);
+
+	const handleClosePopupSetting = useCallback(() => {
 		setOpenPopup(false);
-	};
+	}, []);
 
 	return (
 		<>
 			{token && user && isShow ? (
 				<div className="relative z-10">
 					<header className="w-24 h-screen py-12 bg-primary absolute left-0 top-0 flex flex-col justify-between items-center text-white">
-						<div className="">
+						<nav className="block">
 							<Link to={`/messages${currentRoom?._id ? "/" + currentRoom?._id : ""}`}>
 								<ChatIcon
 									className={`w-8 h-8 text-white mt-6 ${
@@ -76,7 +78,7 @@ const Header = ({ href }: TProps): JSX.Element => {
 									}`}
 								/>
 							</Link>
-						</div>
+						</nav>
 						<div>
 							<div
 								onClick={handleOpenPopupSetting}

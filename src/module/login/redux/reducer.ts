@@ -1,5 +1,4 @@
 import { updateActiveStatus } from "./service";
-// import { IUser } from "./../../chat/utils/types";
 import { createSlice, Dispatch } from "@reduxjs/toolkit";
 
 export type TInitStateAuth = {

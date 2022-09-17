@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import lodash from "lodash";
 import { useDispatch, useSelector } from "react-redux";
+import lodash from "lodash";
+
 import { RootState } from "../../../common/store/store";
 import { chatActions } from "../redux/reducer";
 import socket, { EVENTS } from "../../../utils/socket";
+import { IRoom } from "../utils/types";
 
 type TProps = {
 	setChangeChatName: any;
@@ -19,6 +21,22 @@ const ChangeChatName = ({ setChangeChatName }: TProps): JSX.Element => {
 	const onChangeRoomName = (text: string) => {
 		setChatName(text.trim());
 	};
+
+	const updateCurrentRoomInfo = (
+		currentRoom: IRoom,
+		rooms: IRoom[],
+		chatName: string
+	) => {
+		const newRoom = { ...currentRoom, name: chatName };
+		const newRooms = [...rooms];
+		const curRoomIndex = newRooms.findIndex((room) => room?._id === newRoom?._id);
+		if (curRoomIndex !== -1) {
+			newRooms[curRoomIndex] = newRoom;
+			dispatch(chatActions.updateRoom(newRooms));
+			dispatch(chatActions.updateCurrentRoom(newRoom));
+		}
+	};
+
 	const handleChangeRoomName = lodash.debounce(() => {
 		if (chatName.length === 0) return;
 		setIsLoading(true);
@@ -28,23 +46,15 @@ const ChangeChatName = ({ setChangeChatName }: TProps): JSX.Element => {
 				currentRoom?._id,
 				{ name: chatName },
 				() => {
-					const newRoom = { ...currentRoom, name: chatName };
-					const newRooms = [...rooms];
-					const curRoomIndex = newRooms.findIndex(
-						(room) => room?._id === newRoom?._id
-					);
-					if (curRoomIndex !== -1) {
-						newRooms[curRoomIndex] = newRoom;
-						dispatch(chatActions.updateRoom(newRooms));
-						dispatch(chatActions.updateCurrentRoom(newRoom));
-					}
+					updateCurrentRoomInfo(currentRoom, rooms, chatName);
 					setIsLoading(false);
 				}
 			);
 		}
 	}, 300);
+
 	return (
-		<div className="w-full h-full absolute top-0 left-0">
+		<section className="w-full h-full absolute top-0 left-0">
 			<div className="absolute top-0 left-0 w-full h-full bg-gray-300 bg-opacity-90 z-[11]"></div>
 			<div className="component-center w-1/3 h-1/3 flex flex-col bg-primary rounded-lg shadow-xl z-[12]">
 				<h2 className="text-center my-4 font-black text-2xl">
@@ -79,7 +89,7 @@ const ChangeChatName = ({ setChangeChatName }: TProps): JSX.Element => {
 					</div>
 				</div>
 			</div>
-		</div>
+		</section>
 	);
 };
 

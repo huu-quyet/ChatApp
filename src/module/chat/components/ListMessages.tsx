@@ -2,9 +2,10 @@
 /* eslint-disable indent */
 import React, { useEffect } from "react";
 import { PencilAltIcon } from "@heroicons/react/outline";
-import { IRoom } from "../utils/types";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+
+import { IRoom } from "../utils/types";
 import { RootState } from "../../../common/store/store";
 import { chatActions } from "../redux/reducer";
 import Avatar from "../../../common/components/Avatar";
@@ -23,7 +24,9 @@ const ListMessages = (): JSX.Element => {
 
 	useEffect(() => {
 		if (rooms.length === 0) return;
+
 		const currentRoom = localStorage.getItem("currentRoom");
+
 		if (currentRoom !== "undefined" && currentRoom) {
 			const curRoom = JSON.parse(currentRoom);
 			if (rooms?.find((room) => room?._id === curRoom?._id)) {
@@ -104,8 +107,18 @@ const ListMessages = (): JSX.Element => {
 		return isUnRead;
 	};
 
+	const getRoomName = (room: IRoom) => {
+		return room?.name?.length > 0
+			? room?.name
+			: room?.userId
+					?.reduce((acc: string, cur: any) => {
+						return acc + cur?.userName + ", ";
+					}, "")
+					.trim();
+	};
+
 	return (
-		<div className="w-1/4 relative h-full overflow-hidden my-8">
+		<section className="w-1/4 relative h-full overflow-hidden my-8">
 			<div className="flex items-center justify-between px-4 mr-7">
 				<h2 className="text-4xl font-black">Chats</h2>
 				<PencilAltIcon
@@ -136,13 +149,7 @@ const ListMessages = (): JSX.Element => {
 									</span>
 									<div className="w-[70%]">
 										<span className="font-extrabold block whitespace-nowrap overflow-hidden text-ellipsis">
-											{room?.name?.length > 0
-												? room?.name
-												: room?.userId
-														?.reduce((acc, cur) => {
-															return acc + cur.userName + ", ";
-														}, "")
-														.trim()}
+											{getRoomName(room)}
 										</span>
 										{room.lastMessage && (
 											<span
@@ -177,7 +184,7 @@ const ListMessages = (): JSX.Element => {
 					</div>
 				)}
 			</div>
-		</div>
+		</section>
 	);
 };
 

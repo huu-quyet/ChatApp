@@ -1,11 +1,11 @@
 export interface IRoom {
 	createdAt: string;
 	id: string;
-	message: number[];
+	message?: number[];
 	name: string;
 	nickName: { userId: number; name: string }[];
 	userId: IUser[];
-	__v: number;
+	__v?: number;
 	_id: string;
 	lastMessage?: ILastMessage;
 	unRead?: string[];
@@ -25,6 +25,7 @@ export interface IUser {
 	active?: string;
 	online: boolean;
 	lastTimeOnline?: string;
+	_v?: number;
 }
 
 export interface IMessage {
@@ -40,7 +41,7 @@ export interface IMessage {
 		_id: string;
 	};
 	type: string;
-	__v: number;
+	__v?: number;
 	_id: string;
 }
 
@@ -57,6 +58,18 @@ export interface ILastMessage {
 		_id: string;
 	};
 	type: string;
-	__v: number;
+	__v?: number;
 	_id: string;
+}
+
+export interface ICurrentRoom {
+	createdAt: string;
+	id: string;
+	name: string;
+	nickName: { userId: number; name: string }[];
+	userId: IUser[];
+	__v?: number;
+	_id: string;
+	lastMessage?: ILastMessage;
+	unRead?: string[];
 }

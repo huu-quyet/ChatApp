@@ -1,28 +1,30 @@
-import { CameraIcon } from "@heroicons/react/outline";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { CameraIcon } from "@heroicons/react/outline";
 import { useDispatch, useSelector } from "react-redux";
+
+import Avatar from "./Avatar";
+import ChangePasswordPopup from "./ChangePasswordPopup";
 import { IUser } from "../../module/chat/utils/types";
 import { loginActions } from "../../module/login/redux/reducer";
 import { updateUserInfo } from "../../module/login/redux/service";
 import { RootState } from "../store/store";
-import Avatar from "./Avatar";
-import ChangePasswordPopup from "./ChangePasswordPopup";
 
 const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/huuquyet/image/upload";
 const CLOUDINARY_UPLOAD_PRESET = "huuquyet";
 
 const AccountSetting = (): JSX.Element => {
 	const user = useSelector((state: RootState) => state.auth.user);
+
 	const [isChangePassword, setIsChangePassword] = useState(false);
 	const [userName, setUserName] = useState("");
+
 	const userId: IUser[] = [user];
+	const dispatch = useDispatch();
 
 	useEffect(() => {
 		setUserName(user?.userName);
 	}, [user?.userName]);
-
-	const dispatch = useDispatch();
 
 	const changePassword = () => {
 		setIsChangePassword(!isChangePassword);

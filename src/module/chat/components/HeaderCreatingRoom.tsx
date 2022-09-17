@@ -1,13 +1,14 @@
 import React, { useCallback, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import lodash from "lodash";
+import { CheckIcon, UserIcon, XIcon } from "@heroicons/react/outline";
+
 import { formatTextVN } from "../../../utils/function/Index";
 import { chatActions } from "../redux/reducer";
 import { fetchSearchFriends } from "../redux/service";
-import lodash from "lodash";
-import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../common/store/store";
 import { IRoom, IUser } from "../utils/types";
 import socket, { EVENTS } from "../../../utils/socket";
-import { CheckIcon, UserIcon, XIcon } from "@heroicons/react/outline";
 
 type TProps = {
 	allowCreate: boolean;
@@ -50,10 +51,12 @@ const HeaderCreatingRoom = ({
 			dispatch(chatActions.setSearchedFriends({ searchedFriends: [] }));
 		}
 	};
+
 	const handleChangeDebounce = useCallback(
 		lodash.debounce(onChangeSearch, 500),
 		[]
 	);
+
 	const handleSelectFriend = (user: IUser) => {
 		if (usersSelected?.find((item) => item._id === user._id)) {
 			return;
@@ -81,6 +84,17 @@ const HeaderCreatingRoom = ({
 		handleChangeDebounce(event.target.value);
 	};
 
+	const updateCreateRoomSuccess = (response: any) => {
+		const newRooms = [response, ...rooms];
+		dispatch(chatActions.updateRoom(newRooms));
+		dispatch(chatActions.setIsCreatingRoom(false));
+		dispatch(chatActions.setUsersSelected({ usersSelected: [] }));
+		dispatch(chatActions.setCurrentRoom({ currentRoom: response }));
+		setSearchFriends("");
+		setAllowCreate(false);
+		dispatch(chatActions.updateMesInit());
+	};
+
 	const handleCreateRoom = () => {
 		if (isCreatingRoom && allowCreate && usersSelected?.length > 0) {
 			const user = localStorage.getItem("userInfo");
@@ -99,20 +113,13 @@ const HeaderCreatingRoom = ({
 					message: [],
 				};
 				socket.emit(EVENTS.CLIENT.CREATE_ROOM, newRoom, (response: IRoom) => {
-					const newRooms = [response, ...rooms];
-					dispatch(chatActions.updateRoom(newRooms));
-					dispatch(chatActions.setIsCreatingRoom(false));
-					dispatch(chatActions.setUsersSelected({ usersSelected: [] }));
-					dispatch(chatActions.setCurrentRoom({ currentRoom: response }));
-					setSearchFriends("");
-					setAllowCreate(false);
-					dispatch(chatActions.updateMesInit());
+					updateCreateRoomSuccess(response);
 				});
 			}
 		}
 	};
 	return (
-		<div className="col-start-1 col-end-4 flex items-center">
+		<section className="col-start-1 col-end-4 flex items-center">
 			<span className="font-bold mr-2">To:</span>
 			<div className="relative">
 				<input
@@ -186,7 +193,7 @@ const HeaderCreatingRoom = ({
 					))}
 				</div>
 			)}
-		</div>
+		</section>
 	);
 };
 

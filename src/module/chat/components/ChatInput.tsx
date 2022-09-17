@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import React from "react";
-import { PaperAirplaneIcon, PhotographIcon } from "@heroicons/react/outline";
-import lodash from "lodash";
-import { TYPE_MESSAGE, updateRoom } from "../utils/function";
+import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import EmojiPicker from "emoji-picker-react";
+import lodash from "lodash";
+import { PaperAirplaneIcon, PhotographIcon } from "@heroicons/react/outline";
+
+import { TYPE_MESSAGE, updateRoom } from "../utils/function";
 import { RootState } from "../../../common/store/store";
 import socket, { EVENTS } from "../../../utils/socket";
 import { chatActions } from "../redux/reducer";
 import { IMessage } from "../utils/types";
-import axios from "axios";
-import EmojiPicker from "emoji-picker-react";
 
 const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/huuquyet/image/upload";
 const CLOUDINARY_UPLOAD_PRESET = "huuquyet";
@@ -119,27 +120,24 @@ const ChatInput = ({
 		}
 	};
 
-	const handleShowEmoji = () => {
+	const handleShowEmoji = useCallback(() => {
 		setShowEmoji(!showEmoji);
-	};
+	}, [showEmoji]);
 
-	const handleEmojiClick = (event: any, emoji: any) => {
+	const handleEmojiClick = (emoji: any) => {
 		let message = newMessage;
 		message += emoji.emoji;
 		setNewMessage(message);
 	};
 
-	const closeEmojiContainer = () => {
+	const closeEmojiContainer = useCallback(() => {
 		setShowEmoji(false);
-	};
+	}, []);
 
 	return (
 		<>
 			<div className="w-full relative h-[10%] bg-gray-200 flex items-center">
 				<div className="w-full h-10 flex justify-center items-center relative">
-					{/* <span className="text-2xl font-black w-6 h-6 rounded-full bg-primary flex justify-center items-center mr-4">
-					+
-				</span> */}
 					<span className="relative">
 						<PhotographIcon className="w-8 h-8 text-primary mr-4 hover:bg-gray-200 hover:rounded-full cursor-pointer"></PhotographIcon>
 						<input

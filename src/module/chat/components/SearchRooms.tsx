@@ -1,10 +1,11 @@
 import React, { useCallback, useState } from "react";
 import lodash from "lodash";
+import { XIcon } from "@heroicons/react/outline";
+import { useDispatch } from "react-redux";
+
 import { searchRooms } from "../redux/service";
 import { IRoom } from "../utils/types";
-import { XIcon } from "@heroicons/react/outline";
 import Avatar from "../../../common/components/Avatar";
-import { useDispatch } from "react-redux";
 import { chatActions } from "../redux/reducer";
 import { formatTextVN } from "../../../utils/function/Index";
 

@@ -27,6 +27,7 @@ const ChangePasswordPopup = ({ onClose }: TProps): JSX.Element => {
 	) => {
 		setInput(e.target.value);
 	};
+
 	const submitChangePassword = () => {
 		if (isLoading) {
 			return;
