@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import {
+	Navigate,
+	Route,
+	Routes,
+	useNavigate,
+	useParams,
+} from "react-router-dom";
 import "./App.scss";
 import Header from "./common/components/Header";
 import ChatPage from "./module/chat";
@@ -47,7 +53,10 @@ function App() {
 		const userInfo = localStorage.getItem("userInfo");
 		const token = localStorage.getItem("token");
 
-		if (!token || !userInfo) {
+		if (
+			(!token || !userInfo) &&
+			!window.location.pathname.includes("reset-password")
+		) {
 			navigate("/login", { replace: true });
 		}
 		if (token && userInfo) {

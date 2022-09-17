@@ -9,7 +9,11 @@ import { chatActions } from "../redux/reducer";
 import { RootState } from "../../../common/store/store";
 import { formatTextVN } from "../../../utils/function/Index";
 
-const SearchRooms = (): JSX.Element => {
+type TProps = {
+	handleChooseRoom: (room: IRoom) => void;
+};
+
+const SearchRooms = ({ handleChooseRoom }: TProps): JSX.Element => {
 	const { rooms } = useSelector((state: RootState) => state.chats);
 	const [roomSearch, setRoomSearch] = useState<IRoom[] | []>([]);
 	const [search, setSearch] = useState("");
@@ -45,13 +49,16 @@ const SearchRooms = (): JSX.Element => {
 
 	const handleFocus = () => {
 		dispatch(chatActions.setIsCreatingRoom(false));
-		dispatch(chatActions.setCurrentRoom({ currentRoom: rooms[0] }));
 		dispatch(chatActions.setSearchedFriends({ searchedFriends: [] }));
 	};
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setSearch(event.target.value);
 		handleChangeDebounce(formatTextVN(event.target.value));
+	};
+
+	const handleChooseChat = (room: IRoom) => {
+		handleChooseRoom(room);
 	};
 
 	return (
@@ -83,10 +90,13 @@ const SearchRooms = (): JSX.Element => {
 				<div className="w-full h-fit max-h-96 overflow-y-auto bg-white py-2 z-10 absolute top-[3rem] left-0 shadow-md">
 					{roomSearch?.length > 0 && (
 						<div>
-							<p className="font-bold my-2">Rooms</p>
+							<p className="font-bold my-2">Chats:</p>
 							{roomSearch?.map((room) => {
 								return (
 									<div
+										onClick={() => {
+											handleChooseChat(room);
+										}}
 										className="w-full flex items-center mb-2 py-1 px-1 hover:bg-gray-100 rounded-sm cursor-pointer"
 										key={room._id}
 									>

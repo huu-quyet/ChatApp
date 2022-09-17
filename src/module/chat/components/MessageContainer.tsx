@@ -20,7 +20,7 @@ const MessageContainer = ({ loading }: { loading: boolean }): JSX.Element => {
 		countNewMes,
 	} = useSelector((state: RootState) => state.chats);
 	const [isSendingMes, setIsSendingMes] = useState(false);
-	const [isShowButton, setIsShowBottom] = useState(false);
+	const [isShowButton, setIsShowButton] = useState(false);
 	const [isScroll, setIsScroll] = useState(false);
 	const [newMessage, setNewMessage] = useState("");
 	const [showEmoji, setShowEmoji] = useState(false);
@@ -33,6 +33,7 @@ const MessageContainer = ({ loading }: { loading: boolean }): JSX.Element => {
 		return () => {
 			localStorage.removeItem("currentRoom");
 			dispatch(chatActions.resetRoom());
+			setIsShowButton(false);
 			socket.emit(EVENTS.CLIENT.LEAVE_ROOM, currentRoom?._id);
 		};
 	}, []);
@@ -40,6 +41,7 @@ const MessageContainer = ({ loading }: { loading: boolean }): JSX.Element => {
 	useEffect(() => {
 		setShowEmoji(false);
 		setNewMessage("");
+		setIsShowButton(false);
 		dispatch(chatActions.setShowPopup(false));
 	}, [currentRoom]);
 
@@ -60,9 +62,9 @@ const MessageContainer = ({ loading }: { loading: boolean }): JSX.Element => {
 				setIsLoadMore(false);
 			}
 			if (mesEle.scrollTop / scrollTotal < 0.8) {
-				setIsShowBottom(true);
+				setIsShowButton(true);
 			} else {
-				setIsShowBottom(false);
+				setIsShowButton(false);
 			}
 		};
 		mesEle?.addEventListener("scroll", handleScrollLoadMoreMessage);

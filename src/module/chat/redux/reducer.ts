@@ -79,6 +79,7 @@ const chatsReducer = createSlice({
 			);
 			state.currentRoom = action.payload.currentRoom;
 			state.page = 0;
+			state.isLast = false;
 			state.countNewMes = 0;
 		},
 		updateCurrentRoom(state, action) {

@@ -113,7 +113,7 @@ const ListMessages = (): JSX.Element => {
 					className="h-8 w-8 text-primary cursor-pointer"
 				/>
 			</div>
-			<SearchRooms />
+			<SearchRooms handleChooseRoom={handleChooseRoom} />
 			<div className="my-4 w-full pr-8 overflow-x-hidden overflow-y-scroll scroll-smooth box-content">
 				{isCreatingRoom && (
 					<NewRoom handleCancelCreateRoom={handleCancelCreateRoom} />
