@@ -27,10 +27,10 @@ function App() {
 
 	useEffect(() => {
 		const expireTime = localStorage.getItem("expireTime");
-		if (!expireTime) {
+		if (!expireTime && !window.location.pathname.includes("reset-password")) {
 			navigate("/login", { replace: true });
 		}
-		if (expireTime) {
+		if (expireTime && !window.location.pathname.includes("reset-password")) {
 			const availableTime = +new Date(JSON.parse(expireTime));
 			const now = Date.now();
 			if (now > availableTime) {
