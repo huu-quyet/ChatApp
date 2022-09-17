@@ -4,9 +4,8 @@ import { searchRooms } from "../redux/service";
 import { IRoom } from "../utils/types";
 import { XIcon } from "@heroicons/react/outline";
 import Avatar from "../../../common/components/Avatar";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { chatActions } from "../redux/reducer";
-import { RootState } from "../../../common/store/store";
 import { formatTextVN } from "../../../utils/function/Index";
 
 type TProps = {
@@ -14,7 +13,6 @@ type TProps = {
 };
 
 const SearchRooms = ({ handleChooseRoom }: TProps): JSX.Element => {
-	const { rooms } = useSelector((state: RootState) => state.chats);
 	const [roomSearch, setRoomSearch] = useState<IRoom[] | []>([]);
 	const [search, setSearch] = useState("");
 	const [isLoading, setIsLoading] = useState(false);

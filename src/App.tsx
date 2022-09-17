@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-	Navigate,
-	Route,
-	Routes,
-	useNavigate,
-	useParams,
-} from "react-router-dom";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import "./App.scss";
 import Header from "./common/components/Header";
 import ChatPage from "./module/chat";
