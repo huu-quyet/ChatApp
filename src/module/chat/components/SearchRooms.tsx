@@ -61,7 +61,7 @@ const SearchRooms = ({ handleChooseRoom }: TProps): JSX.Element => {
 	};
 
 	return (
-		<div className="my-4 mr-8 relative">
+		<div className="mb-4 mt-[14px] mr-8 relative">
 			<div className="w-full relative">
 				<input
 					onFocus={handleFocus}

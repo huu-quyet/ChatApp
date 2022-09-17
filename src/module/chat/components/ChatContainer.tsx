@@ -69,7 +69,7 @@ const ChatContainer = (): JSX.Element => {
 	}, [currentRoom?._id]);
 
 	return (
-		<main className="flex-grow -ml-8 w-3/4 h-screen border-l relative">
+		<main className="flex-grow -ml-8 w-3/4 h-full border-l relative">
 			{currentRoom && (rooms?.length > 0 || isCreatingRoom) ? (
 				<>
 					<Header />

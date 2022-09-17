@@ -118,7 +118,7 @@ const ListMessages = (): JSX.Element => {
 	};
 
 	return (
-		<section className="w-1/4 relative h-full overflow-hidden my-8">
+		<section className="w-1/4 relative h-full overflow-hidden py-8">
 			<div className="flex items-center justify-between px-4 mr-7">
 				<h2 className="text-4xl font-black">Chats</h2>
 				<PencilAltIcon
@@ -127,7 +127,7 @@ const ListMessages = (): JSX.Element => {
 				/>
 			</div>
 			<SearchRooms handleChooseRoom={handleChooseRoom} />
-			<div className="my-4 w-full pr-8 overflow-x-hidden overflow-y-scroll scroll-smooth box-content">
+			<div className="my-8 w-full h-3/4 pr-8 overflow-x-hidden overflow-y-scroll scroll-smooth box-content">
 				{isCreatingRoom && (
 					<NewRoom handleCancelCreateRoom={handleCancelCreateRoom} />
 				)}

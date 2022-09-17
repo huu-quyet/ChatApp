@@ -55,7 +55,7 @@ const Header = (): JSX.Element => {
 
 	return (
 		<section
-			className={`h-[12%] min-w-full grid grid-cols-[0.2fr_3fr_0.2fr] py-4 px-4 mb-[2px] relative ${
+			className={`h-[12%] min-w-full grid grid-cols-[0.2fr_3fr_0.2fr] py-4 px-4 relative ${
 				currentRoom?.userId?.length > 2
 					? "grid-rows-[2rem_2rem]"
 					: "grid-rows-[4rem]"

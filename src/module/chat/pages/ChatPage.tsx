@@ -17,7 +17,7 @@ const ChatPage = (): JSX.Element => {
 	}, []);
 
 	return (
-		<main className="flex ml-24">
+		<main className="flex ml-24 h-screen">
 			{!isLoading && (
 				<>
 					<ListMessages />
