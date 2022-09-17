@@ -20,8 +20,9 @@ const ChangeChatName = ({ setChangeChatName }: TProps): JSX.Element => {
 		setChatName(text.trim());
 	};
 	const handleChangeRoomName = lodash.debounce(() => {
+		if (chatName.length === 0) return;
 		setIsLoading(true);
-		if (currentRoom?.name !== chatName && chatName.length > 0) {
+		if (currentRoom?.name !== chatName) {
 			socket.emit(
 				EVENTS.CLIENT.UPDATE_ROOM,
 				currentRoom?._id,

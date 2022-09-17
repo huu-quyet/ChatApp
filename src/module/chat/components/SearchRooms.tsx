@@ -61,7 +61,7 @@ const SearchRooms = (): JSX.Element => {
 					onFocus={handleFocus}
 					type="text"
 					value={search}
-					placeholder="Search..."
+					placeholder="Search conversation ..."
 					className="w-full pl-2 py-2 pr-10 border-t border-b h-10 outline-none focus:border-primary"
 					onChange={handleChange}
 				/>

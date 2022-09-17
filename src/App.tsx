@@ -117,9 +117,9 @@ function App() {
 				<Route
 					path="/calendar"
 					element={
-						<>
-							<div>Calendar</div>
-						</>
+						<div className="relative w-screen h-screen">
+							<div className="font-black text-7xl component-center">Coming soon</div>
+						</div>
 					}
 				/>
 			</Routes>

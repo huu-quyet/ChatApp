@@ -1,25 +1,25 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../common/store/store";
-import MessageContainer from "./MessageContainer";
 import socket, { EVENTS } from "../../../utils/socket";
 import Header from "./Header";
 import { chatActions } from "../redux/reducer";
 import { updateRoom } from "../utils/function";
-
-let is_first = true;
+import MessageContainer from "./MessageContainer";
 
 const ChatContainer = (): JSX.Element => {
-	const { rooms, currentRoom, isLoading } = useSelector(
+	const { rooms, currentRoom, isLoading, isCreatingRoom } = useSelector(
 		(state: RootState) => state.chats
 	);
+	const [loading, setLoading] = useState(false);
 
 	const dispatch = useDispatch();
 
 	useEffect(() => {
 		const userInfo = localStorage.getItem("userInfo");
-		if (currentRoom?._id && userInfo && !isLoading && is_first) {
-			is_first = false;
+		if (currentRoom?._id && userInfo && !isLoading) {
+			console.log(currentRoom);
+			setLoading(true);
 			socket.emit(
 				EVENTS.CLIENT.JOIN_ROOM,
 				null,
@@ -37,10 +37,15 @@ const ChatContainer = (): JSX.Element => {
 					};
 					dispatch(chatActions.getAllMes(response.messages));
 					dispatch(chatActions.updateRoom(newRooms));
+					setLoading(false);
 				}
 			);
 		}
-	}, [currentRoom?._id, isLoading]);
+
+		return () => {
+			socket.emit(EVENTS.CLIENT.LEAVE_ROOM, currentRoom?._id, socket.id);
+		};
+	}, [currentRoom?._id]);
 
 	const handleUpdateRoomMessage = (room: any, newMes: any, currentRoom: any) => {
 		if (currentRoom?._id === newMes?.receiver) {
@@ -63,14 +68,16 @@ const ChatContainer = (): JSX.Element => {
 
 	return (
 		<main className="flex-grow -ml-8 w-3/4 h-screen border-l relative">
-			{currentRoom ? (
+			{currentRoom && (rooms?.length > 0 || isCreatingRoom) ? (
 				<>
 					<Header />
-					<MessageContainer />
+					<MessageContainer loading={loading} />
 				</>
 			) : (
-				<div className="absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] text-2xl font-bold">
-					{/* Choose a room to start the conversation */}
+				<div className="bg-gray-100 w-full h-full">
+					<div className="component-center text-3xl text-center font-bold">
+						Choose a chat to start
+					</div>
 				</div>
 			)}
 		</main>

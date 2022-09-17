@@ -6,22 +6,25 @@ import socket, { EVENTS } from "../../../utils/socket";
 import { chatActions } from "../redux/reducer";
 import ButtonBackToBottom from "./ButtonBacktoBottom";
 import ChatInput from "./ChatInput";
+import CircleLoading from "./CircleLoading";
 import ConversationSetting from "./ConversationSetting";
 import Message from "./Message";
 
-const MessageContainer = (): JSX.Element => {
+const MessageContainer = ({ loading }: { loading: boolean }): JSX.Element => {
 	const {
 		mes,
 		page,
 		currentRoom,
 		isLast: isLastPage,
 		showPopup: popupSetting,
+		countNewMes,
 	} = useSelector((state: RootState) => state.chats);
 	const [isSendingMes, setIsSendingMes] = useState(false);
 	const [isShowButton, setIsShowBottom] = useState(false);
 	const [isScroll, setIsScroll] = useState(false);
 	const [newMessage, setNewMessage] = useState("");
 	const [showEmoji, setShowEmoji] = useState(false);
+	const [isLoadMore, setIsLoadMore] = useState(false);
 	const messageEndRef = useRef<any>(null);
 
 	const dispatch = useDispatch();
@@ -41,6 +44,7 @@ const MessageContainer = (): JSX.Element => {
 	}, [currentRoom]);
 
 	useEffect(() => {
+		if (loading) return;
 		const mesEle = document.querySelector(".messages");
 		const handleScrollLoadMoreMessage = () => {
 			if (!mesEle) return;
@@ -48,10 +52,12 @@ const MessageContainer = (): JSX.Element => {
 			if (mesEle.scrollTop / scrollTotal === 0 && !isLastPage) {
 				setTimeout(() => {
 					setIsScroll(true);
+					setIsLoadMore(true);
 					dispatch(chatActions.updatePage());
 				}, 100);
 			} else {
 				setIsScroll(false);
+				setIsLoadMore(false);
 			}
 			if (mesEle.scrollTop / scrollTotal < 0.8) {
 				setIsShowBottom(true);
@@ -64,7 +70,7 @@ const MessageContainer = (): JSX.Element => {
 		return () => {
 			mesEle?.removeEventListener("scroll", handleScrollLoadMoreMessage);
 		};
-	}, [isLastPage]);
+	}, [isLastPage, loading]);
 
 	useEffect(() => {
 		if (page && !isLastPage && isScroll) {
@@ -74,11 +80,10 @@ const MessageContainer = (): JSX.Element => {
 				{
 					roomId: currentRoom?._id,
 					page: page + 1,
-					skip: page * 30,
+					skip: page * 30 + countNewMes,
 				},
 				(response: any) => {
 					if (response.length > 0) {
-						console.log(response);
 						dispatch(
 							chatActions.updateLoadMoreMes({
 								mes: response,
@@ -93,10 +98,12 @@ const MessageContainer = (): JSX.Element => {
 	}, [page, isLastPage, isScroll]);
 
 	useEffect(() => {
-		if (mes.length > 0 && page === 1) {
+		if (loading) return;
+
+		if (mes.length > 0 && page === 0) {
 			// @ts-ignore
 			setTimeout(() => {
-				messageEndRef?.current?.scrollIntoView();
+				messageEndRef?.current?.scrollIntoView({ behavior: "auto" });
 			}, 100);
 		}
 		if (isSendingMes) {
@@ -104,10 +111,10 @@ const MessageContainer = (): JSX.Element => {
 			messageEndRef?.current?.scrollIntoView({ behavior: "smooth" });
 			setIsSendingMes(false);
 		}
-		if (!isSendingMes && page !== 1) {
+		if (!isSendingMes && page !== 0) {
 			document.querySelector(".last_mess")?.scrollIntoView();
 		}
-	}, [mes, isSendingMes]);
+	}, [mes, loading]);
 
 	const handleBackToBottom = () => {
 		const mesEle = document.querySelector(".messages");
@@ -118,31 +125,44 @@ const MessageContainer = (): JSX.Element => {
 
 	return (
 		<div className="h-[88%] w-full bg-gray-100 relative">
-			{popupSetting ? <ConversationSetting /> : null}
-			<div className="h-[90%] overflow-x-hidden overflow-y-auto messages">
-				{mes.length > 0 && (
-					<>
-						{mes.map((m, i) => {
-							return (
-								<div className={`${i === 0 && "last_mess"} my-2`} key={m?._id}>
-									<Message m={m} />
+			{currentRoom?._id ? (
+				<>
+					{popupSetting ? <ConversationSetting /> : null}
+					{loading ? (
+						<CircleLoading />
+					) : (
+						<div className="h-[90%] w-full overflow-x-hidden overflow-y-auto messages">
+							{isLoadMore ? (
+								<div className="w-full h-6 flex justify-center">
+									<span className="w-6 h-6 border-2 rounded-full border-l-transparent border-primary animate-spin mt-4 inline-block" />
 								</div>
-							);
-						})}
-						<div ref={messageEndRef} />
-					</>
-				)}
-			</div>
-			{isShowButton ? (
-				<ButtonBackToBottom handleBackToBottom={handleBackToBottom} />
+							) : null}
+							{mes.length > 0 && (
+								<>
+									{mes.map((m, i) => {
+										return (
+											<div className={`${i === 0 && "last_mess"} my-2`} key={m?._id}>
+												<Message m={m} />
+											</div>
+										);
+									})}
+									<div ref={messageEndRef} />
+								</>
+							)}
+						</div>
+					)}
+					{isShowButton ? (
+						<ButtonBackToBottom handleBackToBottom={handleBackToBottom} />
+					) : null}
+					<ChatInput
+						newMessage={newMessage}
+						setNewMessage={setNewMessage}
+						showEmoji={showEmoji}
+						setShowEmoji={setShowEmoji}
+						setIsSendingMes={setIsSendingMes}
+					/>
+				</>
 			) : null}
-			<ChatInput
-				newMessage={newMessage}
-				setNewMessage={setNewMessage}
-				showEmoji={showEmoji}
-				setShowEmoji={setShowEmoji}
-				setIsSendingMes={setIsSendingMes}
-			/>
 		</div>
 	);
 };

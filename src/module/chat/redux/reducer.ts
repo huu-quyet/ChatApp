@@ -15,6 +15,7 @@ export type TInitStateChats = {
 	page: number;
 	isLast: boolean;
 	showPopup: boolean;
+	countNewMes: number;
 };
 
 const initState: TInitStateChats = {
@@ -30,6 +31,7 @@ const initState: TInitStateChats = {
 	page: 0,
 	isLast: false,
 	showPopup: false,
+	countNewMes: 0,
 };
 
 const chatsReducer = createSlice({
@@ -47,6 +49,7 @@ const chatsReducer = createSlice({
 			state.usersSelected = [];
 			state.isLoading = true;
 			state.page = 0;
+			state.countNewMes = 0;
 		},
 		resetRoom(state) {
 			state.mes = [];
@@ -59,6 +62,7 @@ const chatsReducer = createSlice({
 			state.usersSelected = [];
 			state.page = 0;
 			state.isLast = false;
+			state.countNewMes = 0;
 		},
 		fetchAllRooms(state, action) {
 			state.rooms = action.payload.rooms;
@@ -74,7 +78,8 @@ const chatsReducer = createSlice({
 				JSON.stringify(action.payload.currentRoom)
 			);
 			state.currentRoom = action.payload.currentRoom;
-			state.page = 1;
+			state.page = 0;
+			state.countNewMes = 0;
 		},
 		updateCurrentRoom(state, action) {
 			localStorage.setItem("currentRoom", JSON.stringify(action.payload));
@@ -82,7 +87,7 @@ const chatsReducer = createSlice({
 		},
 		setIsCreatingRoom(state, action) {
 			state.isCreatingRoom = action.payload;
-			state.page = 1;
+			state.page = 0;
 		},
 		setSearchedFriends(state, action) {
 			state.searchedFriends = action.payload.searchedFriends;
@@ -101,9 +106,13 @@ const chatsReducer = createSlice({
 		},
 		updateMesInit(state) {
 			state.mes = [];
+			state.countNewMes = 0;
+			state.page = 0;
+			state.isLast = false;
 		},
 		updateMes(state, action) {
 			state.mes = [...state.mes, action.payload];
+			state.countNewMes = state.countNewMes + 1;
 		},
 		updatePage(state) {
 			state.page = state.page + 1;
@@ -134,7 +143,7 @@ export const fetchRooms = () => {
 			const rooms = await fetchData();
 			let newCurrentRoom = {};
 			const currentRoom = localStorage.getItem("currentRoom");
-			if (currentRoom) {
+			if (currentRoom && currentRoom !== "{}") {
 				if (rooms.find((room: any) => room?._id === JSON.parse(currentRoom)?._id)) {
 					newCurrentRoom = JSON.parse(currentRoom);
 				} else {

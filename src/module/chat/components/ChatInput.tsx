@@ -2,7 +2,7 @@
 import React from "react";
 import { PaperAirplaneIcon, PhotographIcon } from "@heroicons/react/outline";
 import lodash from "lodash";
-import { checkTypeMes, TYPE_MESSAGE, updateRoom } from "../utils/function";
+import { TYPE_MESSAGE, updateRoom } from "../utils/function";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../common/store/store";
 import socket, { EVENTS } from "../../../utils/socket";
@@ -59,7 +59,7 @@ const ChatInput = ({
 		if (newMessage.length > 0) {
 			const newMes = {
 				content: newMessage,
-				type: checkTypeMes(newMessage),
+				type: TYPE_MESSAGE.TEXT,
 				path: null,
 				sender: {
 					id: user._id,

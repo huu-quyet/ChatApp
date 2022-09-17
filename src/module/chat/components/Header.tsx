@@ -87,13 +87,14 @@ const Header = (): JSX.Element => {
 					)}
 
 					<div className="row-start-1 row-end-3 col-start-3 col-end-4 flex items-center gap-4">
-						<VideoCameraIcon className="w-6 h-6" />
-						<PhoneIcon className="w-6 h-6" />
+						{currentRoom?.userId?.length === 2 ? (
+							<VideoCameraIcon className="w-6 h-6" />
+						) : null}
 						<DotsHorizontalIcon
 							onClick={() => {
 								dispatch(chatActions.setShowPopup(!showPopup));
 							}}
-							className="w-6 h-6"
+							className="w-6 h-6 hover:cursor-pointer"
 						/>
 					</div>
 				</>

@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { formatTextVN } from "../../../utils/function/Index";
 import { chatActions } from "../redux/reducer";
 import { fetchSearchFriends } from "../redux/service";
@@ -25,19 +25,23 @@ const HeaderCreatingRoom = ({
 	const { isCreatingRoom, searchedFriends, usersSelected, rooms } = useSelector(
 		(state: RootState) => state.chats
 	);
+	const [loading, setLoading] = useState(false);
 	const dispatch = useDispatch();
 
 	const onChangeSearch = (userName: string) => {
 		if (formatTextVN(userName).length > 0) {
+			setLoading(true);
 			fetchSearchFriends({ userName: userName })
 				.then((res) => {
 					if (res.data.status === "success") {
 						dispatch(
 							chatActions.setSearchedFriends({ searchedFriends: res.data.users })
 						);
+						setLoading(false);
 					}
 				})
 				.catch(() => {
+					setLoading(false);
 					dispatch(chatActions.setSearchedFriends({ searchedFriends: [] }));
 				});
 		}
@@ -117,10 +121,14 @@ const HeaderCreatingRoom = ({
 					placeholder="Enter your friends name"
 					onChange={handleChangeSearch}
 				/>
-				<XIcon
-					onClick={handleCancel}
-					className="w-3 h-3 absolute top-1/2 right-2 translate-y-[-50%] hover:bg-white rounded-full"
-				/>
+				{loading ? (
+					<div className="w-3 h-3 rounded-full absolute top-[10px] right-2 border-2 border-l-transparent border-primary animate-spin"></div>
+				) : (
+					<XIcon
+						onClick={handleCancel}
+						className="w-3 h-3 absolute top-1/2 right-2 translate-y-[-50%] hover:bg-white rounded-full"
+					/>
+				)}
 			</div>
 			<div className="mx-4 max-h-[100%] w-[70%] p-0 flex flex-wrap gap-1 overflow-y-auto">
 				{usersSelected?.length > 0 && (

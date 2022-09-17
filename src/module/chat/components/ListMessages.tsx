@@ -72,7 +72,7 @@ const ListMessages = (): JSX.Element => {
 	};
 
 	const handleChooseRoom = (room: IRoom) => {
-		if (currentRoom._id === room._id) {
+		if (currentRoom?._id === room?._id) {
 			return;
 		}
 		dispatch(chatActions.setCurrentRoom({ currentRoom: room }));
@@ -107,10 +107,10 @@ const ListMessages = (): JSX.Element => {
 	return (
 		<div className="w-1/4 relative h-full overflow-hidden my-8">
 			<div className="flex items-center justify-between px-4 mr-7">
-				<h2 className="text-4xl font-black">Message</h2>
+				<h2 className="text-4xl font-black">Chats</h2>
 				<PencilAltIcon
 					onClick={handleCreateNewRoom}
-					className="h-8 w-8 text-secondary cursor-pointer"
+					className="h-8 w-8 text-primary cursor-pointer"
 				/>
 			</div>
 			<SearchRooms />
@@ -172,9 +172,8 @@ const ListMessages = (): JSX.Element => {
 						})}
 					</>
 				) : (
-					<div className="w-[80%] h-full mt-[50%] text-center text-xl font-bold">
-						{/* <div>Empty Messages</div>
-						<div>Create room to connect your friends</div> */}
+					<div className="w-[80%] h-full mt-[50%] text-center text-2xl font-bold">
+						<div>Create chats to connect your friends</div>
 					</div>
 				)}
 			</div>

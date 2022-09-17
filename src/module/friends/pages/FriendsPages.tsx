@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Dispatch } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
 import ListFriends from "../components/ListFriends";
-import { fetchAllFriends } from "../redux/reducer";
+import { fetchAllFriends, friendsAction } from "../redux/reducer";
 import UserInfo from "../components/UserInfo";
 
 const FriendsPage = (): JSX.Element => {
@@ -10,6 +10,10 @@ const FriendsPage = (): JSX.Element => {
 
 	useEffect(() => {
 		dispatch(fetchAllFriends());
+
+		return () => {
+			dispatch(friendsAction.initState());
+		};
 	}, []);
 
 	return (
