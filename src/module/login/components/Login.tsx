@@ -58,7 +58,7 @@ const Login = (): JSX.Element => {
 		e: React.ChangeEvent<HTMLInputElement>,
 		setState: React.SetStateAction<any>
 	) => {
-		setState(e.target.value.trim());
+		setState(e.target.value);
 	};
 
 	const login = (e: any) => {

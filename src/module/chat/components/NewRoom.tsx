@@ -9,6 +9,16 @@ type TProps = {
 
 const NewRoom = ({ handleCancelCreateRoom }: TProps): JSX.Element => {
 	const { usersSelected } = useSelector((state: RootState) => state.chats);
+
+	const getName = () => {
+		const name = usersSelected
+			?.reduce((pre, cur) => {
+				return pre + cur?.userName + ", ";
+			}, "")
+			.trim();
+		return name.slice(0, name.length - 1);
+	};
+
 	return (
 		<div
 			className={`w-full bg-gray-100 px-2 py-2 flex items-center relative rounded-sm cursor-pointer 
@@ -20,10 +30,7 @@ const NewRoom = ({ handleCancelCreateRoom }: TProps): JSX.Element => {
 			<span className="font-bold max-w-[60%]">
 				{usersSelected?.length > 0 ? (
 					<span className="w-full block text-ellipsis overflow-hidden whitespace-nowrap">
-						Chat with:{" "}
-						{usersSelected?.reduce((pre, cur) => {
-							return pre + cur?.userName + ", ";
-						}, "")}
+						Chat with: {getName()}
 					</span>
 				) : (
 					<span>New chat</span>

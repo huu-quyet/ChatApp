@@ -4,7 +4,6 @@ import lodash from "lodash";
 
 import { IUser } from "../../chat/utils/types";
 import { searchUserByUserName } from "../redux/service";
-import { formatTextVN } from "../../../utils/function/Index";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { friendsAction } from "../redux/reducer";
@@ -49,7 +48,7 @@ const SearchFriend = (): JSX.Element => {
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setValueFriends(event.target.value);
-		handleChangeDebounce(formatTextVN(event.target.value));
+		handleChangeDebounce(event.target.value);
 	};
 
 	const handleCloseSearch = () => {

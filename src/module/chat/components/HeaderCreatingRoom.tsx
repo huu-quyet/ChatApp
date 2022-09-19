@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import lodash from "lodash";
 import { CheckIcon, UserIcon, XIcon } from "@heroicons/react/outline";
 
-import { formatTextVN } from "../../../utils/function/Index";
 import { chatActions } from "../redux/reducer";
 import { fetchSearchFriends } from "../redux/service";
 import { RootState } from "../../../common/store/store";
@@ -26,11 +25,13 @@ const HeaderCreatingRoom = ({
 	const { isCreatingRoom, searchedFriends, usersSelected, rooms } = useSelector(
 		(state: RootState) => state.chats
 	);
+	const { user } = useSelector((state: RootState) => state.auth);
+
 	const [loading, setLoading] = useState(false);
 	const dispatch = useDispatch();
 
 	const onChangeSearch = (userName: string) => {
-		if (formatTextVN(userName).length > 0) {
+		if (userName.length > 0) {
 			setLoading(true);
 			fetchSearchFriends({ userName: userName })
 				.then((res) => {
@@ -95,19 +96,33 @@ const HeaderCreatingRoom = ({
 		dispatch(chatActions.updateMesInit());
 	};
 
+	const setChatName = (usersSelected: IUser[]) => {
+		let roomName = "";
+
+		roomName = usersSelected
+			?.reduce((acc: string, cur: any) => {
+				let name = "";
+				if (cur?._id === user?._id) {
+					name = "";
+				} else {
+					name = cur?.userName + ", ";
+				}
+				return acc + name;
+			}, "")
+			.trim();
+
+		roomName = roomName.slice(0, roomName.length - 1);
+
+		return roomName;
+	};
+
 	const handleCreateRoom = () => {
 		if (isCreatingRoom && allowCreate && usersSelected?.length > 0) {
 			const user = localStorage.getItem("userInfo");
 			if (user) {
-				// const chatName = usersSelected
-				// 	.reduce((acc, cur) => {
-				// 		return acc + cur.userName + ", ";
-				// 	}, "")
-				// 	.trim();
 				const newRoom = {
 					userCreate: JSON.parse(user)?._id,
-					// name: chatName.slice(0, chatName.length - 1),
-					name: "",
+					name: setChatName(usersSelected),
 					userId: usersSelected.reduce((acc: string[], cur: IUser) => {
 						return [...acc, cur._id];
 					}, []),

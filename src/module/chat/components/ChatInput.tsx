@@ -88,7 +88,7 @@ const ChatInput = ({
 				content: "",
 				type: TYPE_MESSAGE.IMG,
 				path: path,
-				sender: user.id,
+				sender: user._id,
 				sendedAt: new Date(Date.now()),
 				receiver: currentRoom._id,
 			};

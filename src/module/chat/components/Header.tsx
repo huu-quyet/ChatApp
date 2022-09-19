@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../../../common/store/store";
 import { chatActions } from "../redux/reducer";
-import { IUser } from "../utils/types";
 import { DotsHorizontalIcon, VideoCameraIcon } from "@heroicons/react/outline";
 import Avatar from "../../../common/components/Avatar";
 import HeaderCreatingRoom from "./HeaderCreatingRoom";
@@ -13,8 +12,11 @@ import HeaderCreatingRoom from "./HeaderCreatingRoom";
 const Header = (): JSX.Element => {
 	const { currentRoom, isCreatingRoom, usersSelected, rooms, showPopup } =
 		useSelector((state: RootState) => state.chats);
+	const { user } = useSelector((state: RootState) => state.auth);
+
 	const [searchFriends, setSearchFriends] = useState("");
 	const [allowCreate, setAllowCreate] = useState(false);
+
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -46,11 +48,27 @@ const Header = (): JSX.Element => {
 	}, [isCreatingRoom]);
 
 	const getNameRoom = () => {
-		return currentRoom?.name?.length > 0
-			? currentRoom?.name
-			: currentRoom?.userId?.reduce((acc: string, cur: IUser) => {
-					return acc + cur.userName + ", ";
-			  }, "");
+		let roomName = "";
+
+		if (currentRoom?.name?.length > 0) {
+			roomName = currentRoom.name;
+		} else {
+			roomName = currentRoom?.userId
+				?.reduce((acc: string, cur: any) => {
+					let name = "";
+					if (cur?._id === user?._id) {
+						name = "";
+					} else {
+						name = cur?.userName + ", ";
+					}
+					return acc + name;
+				}, "")
+				.trim();
+
+			roomName = roomName.slice(0, roomName.length - 1);
+		}
+
+		return roomName;
 	};
 
 	return (
@@ -72,7 +90,7 @@ const Header = (): JSX.Element => {
 			) : (
 				<>
 					<div className="w-[3rem] mr-4 row-start-1 row-end-3 flex items-center">
-						<span className="w-12 h-12 block rounded-full relative bg-bg1">
+						<span className="w-12 h-12 block rounded-full relative bg-gray-300 border-primary border-2">
 							<Avatar userId={currentRoom?.userId} />
 						</span>
 					</div>

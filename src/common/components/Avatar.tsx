@@ -1,6 +1,8 @@
 import React from "react";
 import { UserGroupIcon, UserIcon } from "@heroicons/react/outline";
 import { IUser } from "../../module/chat/utils/types";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
 
 type TProp = {
 	userId: IUser[];
@@ -8,13 +10,25 @@ type TProp = {
 };
 
 const Avatar = ({ userId }: TProp): JSX.Element => {
+	const { user } = useSelector((state: RootState) => state.auth);
+
+	const getUrlImg = () => {
+		let url = "";
+
+		if (userId && userId.length >= 2) {
+			const members = userId.filter((member) => member._id !== user._id);
+			url = members[0]?.avatar || "";
+		}
+
+		return url;
+	};
 	return (
 		<>
 			{userId &&
 				(userId?.length > 2 ? (
 					userId[0]?.avatar ? (
 						<img
-							src={userId[0]?.avatar}
+							src={getUrlImg()}
 							className="h-full w-full rounded-full object-cover"
 						></img>
 					) : (
@@ -22,7 +36,7 @@ const Avatar = ({ userId }: TProp): JSX.Element => {
 					)
 				) : userId[0]?.avatar ? (
 					<img
-						src={userId[0]?.avatar}
+						src={getUrlImg()}
 						className="h-full w-full rounded-full object-cover"
 					></img>
 				) : (

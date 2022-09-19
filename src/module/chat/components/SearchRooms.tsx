@@ -7,7 +7,6 @@ import { searchRooms } from "../redux/service";
 import { IRoom } from "../utils/types";
 import Avatar from "../../../common/components/Avatar";
 import { chatActions } from "../redux/reducer";
-import { formatTextVN } from "../../../utils/function/Index";
 
 type TProps = {
 	handleChooseRoom: (room: IRoom) => void;
@@ -53,7 +52,7 @@ const SearchRooms = ({ handleChooseRoom }: TProps): JSX.Element => {
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setSearch(event.target.value);
-		handleChangeDebounce(formatTextVN(event.target.value));
+		handleChangeDebounce(event.target.value);
 	};
 
 	const handleChooseChat = (room: IRoom) => {

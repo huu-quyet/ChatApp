@@ -25,9 +25,12 @@ const Friend = ({ friend, handleSelectUser }: TProps) => {
 		>
 			<span className="flex items-center w-full relative">
 				{friend?.avatar ? (
-					<img src={friend.avatar} className="h-12 w-12 object-cover rounded-full" />
+					<img
+						src={friend.avatar}
+						className="h-12 w-12 object-cover rounded-full border-primary border-2"
+					/>
 				) : (
-					<span className="relative w-12 h-12 rounded-full bg-gray-300 inline-block">
+					<span className="relative w-12 h-12 rounded-full bg-gray-300 inline-block border-primary border-2">
 						<UserIcon className="h-8 w-8 text-white absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%]" />
 					</span>
 				)}
