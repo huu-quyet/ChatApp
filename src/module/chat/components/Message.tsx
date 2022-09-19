@@ -11,7 +11,7 @@ const Message = ({ m }: TProps): JSX.Element => {
 		let check = false;
 		const userInfo = localStorage.getItem("userInfo");
 		if (userInfo) {
-			if (mes.sender?.id === JSON.parse(userInfo)._id) {
+			if (mes.sender?._id.toString() === JSON.parse(userInfo)._id) {
 				check = true;
 			} else {
 				check = false;
@@ -20,6 +20,7 @@ const Message = ({ m }: TProps): JSX.Element => {
 
 		return check;
 	};
+
 	return (
 		<>
 			{checkMesBelongUser(m) ? (

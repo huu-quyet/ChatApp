@@ -46,9 +46,9 @@ const ChatInput = ({
 		socket.emit(
 			EVENTS.CLIENT.SEND_MESSAGE,
 			newMes,
-			(response: { room: any; newMes: IMessage }) => {
+			(response: { room: any; newMessInfo: IMessage }) => {
 				updateRoom(rooms, response.room, dispatch);
-				dispatch(chatActions.updateMes(response.newMes));
+				dispatch(chatActions.updateMes(response.newMessInfo));
 			}
 		);
 	};
@@ -62,12 +62,7 @@ const ChatInput = ({
 				content: newMessage,
 				type: TYPE_MESSAGE.TEXT,
 				path: null,
-				sender: {
-					id: user._id,
-					userName: user.userName,
-					avatar: user?.avatar,
-				},
-
+				sender: user._id,
 				sendedAt: new Date(Date.now()),
 				receiver: currentRoom._id,
 			};
@@ -93,12 +88,7 @@ const ChatInput = ({
 				content: "",
 				type: TYPE_MESSAGE.IMG,
 				path: path,
-				sender: {
-					id: user._id,
-					userName: user.userName,
-					avatar: user?.avatar,
-				},
-
+				sender: user.id,
 				sendedAt: new Date(Date.now()),
 				receiver: currentRoom._id,
 			};

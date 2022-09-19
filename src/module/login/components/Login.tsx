@@ -23,6 +23,8 @@ const Login = (): JSX.Element => {
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const [loginError, setLoginError] = useState("");
 	const [typePassword, setTypePassword] = useState("password");
+	const [loginLoading, setLoadingLogin] = useState(false);
+	const [signLoading, setSignLoading] = useState(false);
 
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
@@ -56,7 +58,7 @@ const Login = (): JSX.Element => {
 		e: React.ChangeEvent<HTMLInputElement>,
 		setState: React.SetStateAction<any>
 	) => {
-		setState(e.target.value);
+		setState(e.target.value.trim());
 	};
 
 	const login = (e: any) => {
@@ -77,26 +79,35 @@ const Login = (): JSX.Element => {
 				setLoginError("Please enter a password");
 				return;
 			}
-			if (email && password && email.includes("@") && password.length >= 8) {
+			if (
+				email &&
+				password &&
+				email.includes("@") &&
+				password.length >= 8 &&
+				!loginLoading
+			) {
 				const data = {
 					email,
 					password,
 				};
+				setLoadingLogin(true);
 				apiLogin(data)
 					.then((data) => {
 						setLoginError("");
 						localStorage.setItem("userInfo", JSON.stringify(data.data.data));
 						localStorage.setItem("expireTime", JSON.stringify(data.data.expireTime));
 						localStorage.setItem("token", JSON.stringify(data.data.token));
+						setLoadingLogin(false);
 						dispatch(loginActions.login(data.data.data));
 						navigate("/messages", { replace: true });
 					})
 					.catch((error) => {
 						if (error.response.data.message) {
 							setLoginError(error.response.data.message);
+							setLoadingLogin(false);
 							return;
 						}
-
+						setLoadingLogin(false);
 						setLoginError("Something went wrong!!!");
 					});
 			}
@@ -149,7 +160,8 @@ const Login = (): JSX.Element => {
 				userName &&
 				userName.length >= 4 &&
 				confirmPassword &&
-				password.trim() === confirmPassword.trim()
+				password.trim() === confirmPassword.trim() &&
+				!signLoading
 			) {
 				const data = {
 					email,
@@ -157,17 +169,20 @@ const Login = (): JSX.Element => {
 					password,
 					confirmPassword,
 				};
+				setSignLoading(true);
 				apiSignUp(data)
 					.then(() => {
 						setLoginError("Success");
+						setSignLoading(false);
 						navigate("/login", { replace: true });
 					})
 					.catch((error) => {
 						if (error.response.data.message) {
 							setLoginError(error.response.data.message);
+							setSignLoading(false);
 							return;
 						}
-
+						setSignLoading(false);
 						setLoginError("Something went wrong!!!");
 					});
 			}
@@ -236,12 +251,16 @@ const Login = (): JSX.Element => {
 									/>
 								)}
 							</div>
-							<div className="w-full uppercase tracking-wider border-none my-4 flex justify-center items-center">
-								<span
-									onClick={(e) => login(e)}
-									className="bg-secondary text-white px-8 py-2 rounded-lg shadow-[2px_2px_5px_#666666,-2px_-2px_5px_#ffffff] cursor-pointer transition-all active:translate-y-1"
-								>
-									Log in
+							<div
+								onClick={(e) => login(e)}
+								className="w-full uppercase tracking-wider border-none my-4 flex justify-center items-center"
+							>
+								<span className="bg-primary text-white px-8 py-2 w-32 rounded-lg shadow-[2px_2px_5px_#666666,-2px_-2px_5px_#ffffff] cursor-pointer transition-all active:translate-y-1 flex justify-center items-center">
+									{loginLoading ? (
+										<span className="w-6 h-6 rounded-full border-4 border-white border-l-transparent animate-spin inline-block"></span>
+									) : (
+										<span className="font-black">Login</span>
+									)}
 								</span>
 							</div>
 							<Link className="underline hover:text-secondary" to="/forgot-password">
@@ -304,12 +323,16 @@ const Login = (): JSX.Element => {
 								/>
 								<KeyIcon className="icon" />
 							</div>
-							<div className="w-full uppercase tracking-wider flex justify-center items-center mt-2">
-								<span
-									onClick={(e) => signUp(e)}
-									className="px-8 py-2 border-none text-white bg-secondary rounded-lg shadow-[2px_2px_5px_#666666,-2px_-2px_5px_#ffffff] cursor-pointer transition-all active:translate-y-1"
-								>
-									Sign up
+							<div
+								onClick={(e) => signUp(e)}
+								className="w-full uppercase tracking-wider flex justify-center items-center mt-2"
+							>
+								<span className="px-8 py-2 border-none text-white bg-primary rounded-lg shadow-[2px_2px_5px_#666666,-2px_-2px_5px_#ffffff] cursor-pointer transition-all active:translate-y-1 flex justify-center items-center">
+									{signLoading ? (
+										<span className="w-6 h-6 rounded-full border-4 border-white border-l-transparent animate-spin inline-block"></span>
+									) : (
+										<span className="font-black">Sign up</span>
+									)}
 								</span>
 							</div>
 						</form>

@@ -9,6 +9,7 @@ export interface IRoom {
 	_id: string;
 	lastMessage?: ILastMessage;
 	unRead?: string[];
+	updatedAt: string;
 }
 
 export interface IUser {

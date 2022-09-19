@@ -18,6 +18,7 @@ const ListMessages = (): JSX.Element => {
 	const { rooms, currentRoom, isCreatingRoom } = useSelector(
 		(state: RootState) => state.chats
 	);
+	const { user } = useSelector((state: RootState) => state.auth);
 
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
@@ -108,13 +109,25 @@ const ListMessages = (): JSX.Element => {
 	};
 
 	const getRoomName = (room: IRoom) => {
-		return room?.name?.length > 0
-			? room?.name
-			: room?.userId
-					?.reduce((acc: string, cur: any) => {
-						return acc + cur?.userName + ", ";
-					}, "")
-					.trim();
+		let roomName = "";
+
+		if (room?.name?.length > 0) {
+			roomName = room.name;
+		} else {
+			roomName = room?.userId
+				?.reduce((acc: string, cur: any) => {
+					let name = "";
+					if (cur?._id === user?._id) {
+						name = "";
+					} else {
+						name = cur?.userName + ", ";
+					}
+					return acc + name;
+				}, "")
+				.trim();
+		}
+
+		return roomName;
 	};
 
 	return (
@@ -133,50 +146,54 @@ const ListMessages = (): JSX.Element => {
 				)}
 				{rooms?.length > 0 ? (
 					<>
-						{rooms?.map((room: IRoom) => {
-							return (
-								<div
-									key={room._id}
-									className={`w-full px-2 py-2 flex items-center rounded-sm cursor-pointer relative ${
-										currentRoom?._id === room?._id ? "bg-gray-100" : ""
-									}`}
-									onClick={() => {
-										handleChooseRoom(room);
-									}}
-								>
-									<span className="h-12 w-12 rounded-full bg-gray-300 mr-4 relative">
-										<Avatar userId={room?.userId} />
-									</span>
-									<div className="w-[70%]">
-										<span className="font-extrabold block whitespace-nowrap overflow-hidden text-ellipsis">
-											{getRoomName(room)}
+						{[...rooms]
+							.sort((a, b) => {
+								return new Date(a.updatedAt) > new Date(b.updatedAt) ? -1 : 1;
+							})
+							.map((room: IRoom) => {
+								return (
+									<div
+										key={room._id}
+										className={`w-full px-2 py-2 flex items-center rounded-sm cursor-pointer relative ${
+											currentRoom?._id === room?._id ? "bg-gray-100" : ""
+										}`}
+										onClick={() => {
+											handleChooseRoom(room);
+										}}
+									>
+										<span className="h-12 w-12 rounded-full bg-gray-300 mr-4 relative">
+											<Avatar userId={room?.userId} />
 										</span>
-										{room.lastMessage && (
-											<span
-												className={`w-full text-sm flex justify-between items-center ${
-													checkUnReadNewMes(room?.unRead) && "font-bold"
-												}`}
-											>
-												<span className="whitespace-nowrap overflow-hidden text-ellipsis mr-4">
-													{room?.lastMessage?.type === TYPE_MESSAGE.TEXT &&
-														room.lastMessage?.content}
-													{room?.lastMessage?.type === TYPE_MESSAGE.IMG && "image"}
-												</span>
-												<span className="mr-2">
-													{getDate(room.lastMessage?.receivedAt)}
-												</span>
+										<div className="w-[70%]">
+											<span className="font-extrabold block whitespace-nowrap overflow-hidden text-ellipsis">
+												{getRoomName(room)}
 											</span>
-										)}
-										{checkUnReadNewMes(room?.unRead) && (
-											<span className="w-3 h-3 flex absolute top-2 left-2">
-												<span className="w-full h-full inline-flex bg-blue-500 rounded-full animate-ping absolute opacity-75"></span>
-												<span className="relative inline-flex w-full h-full rounded-full bg-blue-500"></span>
-											</span>
-										)}
+											{room.lastMessage && (
+												<span
+													className={`w-full text-sm flex justify-between items-center ${
+														checkUnReadNewMes(room?.unRead) && "font-bold"
+													}`}
+												>
+													<span className="whitespace-nowrap overflow-hidden text-ellipsis mr-4">
+														{room?.lastMessage?.type === TYPE_MESSAGE.TEXT &&
+															room.lastMessage?.content}
+														{room?.lastMessage?.type === TYPE_MESSAGE.IMG && "image"}
+													</span>
+													<span className="mr-2">
+														{getDate(room.lastMessage?.receivedAt)}
+													</span>
+												</span>
+											)}
+											{checkUnReadNewMes(room?.unRead) && (
+												<span className="w-3 h-3 flex absolute top-2 left-2">
+													<span className="w-full h-full inline-flex bg-blue-500 rounded-full animate-ping absolute opacity-75"></span>
+													<span className="relative inline-flex w-full h-full rounded-full bg-blue-500"></span>
+												</span>
+											)}
+										</div>
 									</div>
-								</div>
-							);
-						})}
+								);
+							})}
 					</>
 				) : (
 					<div className="w-[80%] h-full mt-[50%] text-center text-2xl font-bold">

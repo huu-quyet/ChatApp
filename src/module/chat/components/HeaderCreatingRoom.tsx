@@ -99,14 +99,15 @@ const HeaderCreatingRoom = ({
 		if (isCreatingRoom && allowCreate && usersSelected?.length > 0) {
 			const user = localStorage.getItem("userInfo");
 			if (user) {
-				const chatName = usersSelected
-					.reduce((acc, cur) => {
-						return acc + cur.userName + ", ";
-					}, "")
-					.trim();
+				// const chatName = usersSelected
+				// 	.reduce((acc, cur) => {
+				// 		return acc + cur.userName + ", ";
+				// 	}, "")
+				// 	.trim();
 				const newRoom = {
 					userCreate: JSON.parse(user)?._id,
-					name: chatName.slice(0, chatName.length - 1),
+					// name: chatName.slice(0, chatName.length - 1),
+					name: "",
 					userId: usersSelected.reduce((acc: string[], cur: IUser) => {
 						return [...acc, cur._id];
 					}, []),

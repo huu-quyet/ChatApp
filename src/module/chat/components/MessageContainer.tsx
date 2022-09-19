@@ -99,8 +99,10 @@ const MessageContainer = ({ loading }: { loading: boolean }): JSX.Element => {
 								isLast: response?.length === 30 ? false : true,
 							})
 						);
+						setIsLoadMore(false);
 						setIsSendingMes(false);
 					}
+					setIsLoadMore(false);
 				}
 			);
 		}
