@@ -148,7 +148,12 @@ const ListMessages = (): JSX.Element => {
 					<>
 						{[...rooms]
 							.sort((a, b) => {
-								return new Date(a.updatedAt) > new Date(b.updatedAt) ? 1 : -1;
+								if (!a?.updatedAt && b?.updatedAt) return 1;
+								if (a?.updatedAt && !b?.updatedAt) return -1;
+								if (a?.updatedAt && b?.updatedAt)
+									return new Date(a.updatedAt) > new Date(b.updatedAt) ? -1 : 1;
+
+								return 1;
 							})
 							.map((room: IRoom) => {
 								return (

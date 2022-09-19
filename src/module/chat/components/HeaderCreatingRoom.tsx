@@ -111,6 +111,7 @@ const HeaderCreatingRoom = ({
 					userId: usersSelected.reduce((acc: string[], cur: IUser) => {
 						return [...acc, cur._id];
 					}, []),
+					updatedAt: Date.now(),
 					message: [],
 				};
 				socket.emit(EVENTS.CLIENT.CREATE_ROOM, newRoom, (response: IRoom) => {
