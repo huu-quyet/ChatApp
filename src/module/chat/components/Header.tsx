@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../../../common/store/store";
 import { chatActions } from "../redux/reducer";
-import { DotsHorizontalIcon, VideoCameraIcon } from "@heroicons/react/outline";
+import { DotsHorizontalIcon } from "@heroicons/react/outline";
 import Avatar from "../../../common/components/Avatar";
 import HeaderCreatingRoom from "./HeaderCreatingRoom";
 
