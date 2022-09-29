@@ -42,9 +42,7 @@ const Notify = (): JSX.Element => {
 					})}
 				</>
 			) : (
-				<div className="text-xl font-bold text-center mt-24">
-					Empty Notification
-				</div>
+				<div className="text-xl font-bold text-center mt-24">Empty</div>
 			)}
 		</div>
 	);
